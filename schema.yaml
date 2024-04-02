@@ -1,0 +1,107 @@
+x-google-marketplace:
+  schemaVersion: v2
+  
+  applicationApiVersion: v1beta1
+  
+  publishedVersion: '3.9.0-14'
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial Release of Spektra (BYOL).
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  deployerServiceAccount:
+    description: >
+      Service account for the Spektra deployment. This service account
+      requires permissions to provision various resources.
+    roles:
+    - type: ClusterRole
+      rulesType: CUSTOM
+      rules:
+      - apiGroups: ['']
+        resources: ['secrets', 'ServiceAccount', 'namespaces']
+        verbs: ['*']
+      - apiGroups: ['apps']
+        resources: ['deployments']
+        verbs: ['*']
+      - apiGroups: ['rbac.authorization.k8s.io']
+        resources: ['*']
+        verbs: ['*']
+      - apiGroups: ['apiextensions.k8s.io']
+        resources: ['*']
+        verbs: ['*']
+
+  clusterConstraints:
+    assistedClusterCreation:
+      type: DISABLED
+      creationGuidance: >
+        The GKE cluster should have Kubernetes version <b>1.28</b>. </br>
+        There should be at least one worker node with a minimum configuration of <b>E2-Standard-4 [4 VCPU and 16GB Memory]</b>.  </br>
+        You should enable the <b>Identity Service</b>. </br>
+        In order to configure GKE OIDC, Spektra's FQDN Issuer URL needs a CA certificate.
+  
+  images:
+    spektrasvc:
+      properties: 
+        spektrasvcRepo: 
+          type: FULL
+          
+form:
+  - widget: help
+    description: |
+      <h5>Follow the documentation to proceed. <a href="https://github.com/diamanticom/gmp-spektra">here</a></h5>
+      <h4>Prerequisites</h4>
+      <ul>
+        <li>Create a new <b>spektra-system</b> namespace. </li>
+        <li>The GKE cluster should have Kubernetes version 1.28 </li>
+        <li>There should be at least one worker node with a minimum configuration of <b>E2-Standard-4 [4 VCPU and 16GB Memory]</b>.</li>
+        <li>You should enable the <b>Identity Service</b>.</li>
+        <li>To configure GKE OIDC, Spektra's FQDN Issuer URL requires a CA certificate.</li>
+      </ul>
+      
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    default: spektra-system
+    x-google-marketplace:
+      type: NAMESPACE
+  spec.clusterVip:
+    type: string
+    title: OIDC_VIP
+    description: It is the OIDC VIP address of the GKE cluster.
+  spec.spektraFqdn:
+    type: string
+    title: FQDN
+    description: Fully Qualified Domain Name (FQDN) used for cluster.
+  spec.spektraPort:
+    type: integer
+    title: Spektra Port
+    description: Spektra ingress HTTPS port
+    default: 5443
+  spec.clusterApiPort:
+    type: integer
+    title: Cluster Api Port
+    description: Domain cluster k8s API port
+    default: 443
+  spec.controlPlaneCert.type:
+    type: string
+    default: ca
+  spec.controlPlaneCert.crt:
+    type: string
+    title: CA_CERT_FILE_BASE64 is valid .crt in base64 format.
+  spec.controlPlaneCert.key:
+    type: string
+    title: CA_KEY_FILE_BASE64 is valid .key in base64 format.
+
+required:
+- name
+- namespace
+- spec.clusterVip
+- spec.spektraFqdn
+- spec.controlPlaneCert.crt
+- spec.controlPlaneCert.key

@@ -1,0 +1,17 @@
+properties:
+  spec.clusterVip:
+    type: string
+    default: https://example.com:443
+
+  spec.spektraFqdn:
+    type: string
+    default: example.com
+  
+  spec.controlPlaneCert.crt:
+    type: string
+    default: EXAMPLECERT
+  
+  spec.controlPlaneCert.key:
+    type: string
+    default: EXAMPLEKEY
+  

@@ -1,0 +1,46 @@
+# Default values for Spektra spektrasvc.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: ""
+
+# operatorServiceAccount: ""
+
+# image repository and tags
+images:
+  spektrasvcRepo: gcr.io/diamanti-public/spektra-byol/spektrasvc
+  spektrasvcTag: 3.9.0-14
+  spektrasvcPullPolicy: IfNotPresent
+
+# specification
+spec:
+  # target domain cluster VIP or host
+  clusterVip: null
+
+  # domain cluster k8s API port
+  clusterApiPort: 6443
+
+  # Spektra ingress FQDN
+  spektraFqdn: null
+
+  # Spektra ingress HTTPS port`
+  spektraPort: 5443
+
+  # Spektra service external IP
+  externalIp: ""
+
+  # Spektra k8s auth impersonation
+  impersonation: false
+
+  # Spektra control plane certificates
+  controlPlaneCert:
+    # type "ssl" should be specified for SSL certs
+    # type "ca" is used to indicate a CA cert to sign
+    # a dynamically generated SSL cert 
+    type: ssl
+    # base64 encoded crt file
+    crt: null
+    # base64 encoded key file
+    key: null
+    # AWS SSL cert ARN
+    awsSslCertArn: ""

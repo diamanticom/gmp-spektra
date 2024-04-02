@@ -1,0 +1,147 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: spektrasvcs.spektra.diamanti.io
+spec:
+  group: spektra.diamanti.io
+  names:
+    kind: SpektraSvc
+    listKind: SpektraSvcList
+    plural: spektrasvcs
+    singular: spektrasvc
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info:
+              https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SpektraSvcSpec defines the desired state of SpektraSvc
+            properties:
+              aggregation:
+                description: Aggregation services config
+                properties:
+                  essize:
+                    description: Size of database to keep logs and events
+                    format: int32
+                    type: integer
+                  events:
+                    description: 'Event Aggegation service: enable/disable'
+                    type: boolean
+                  logs:
+                    description: 'Log Aggegation service: enable/disable'
+                    type: boolean
+                  metricdbsize:
+                    description: Size of bucket to keep metrics data
+                    format: int32
+                    type: integer
+                  stats:
+                    description: 'Statistics service: enabled/disabled'
+                    type: boolean
+                  storageclass:
+                    description: Storage class to be used for various databases
+                    type: string
+                required:
+                - events
+                - logs
+                - stats
+                type: object
+              domain:
+                description: Domain-level info
+                properties:
+                  customer:
+                    description: Name of the customer as registered with diamanti.io
+                    type: string
+                  id:
+                    description: Unique identification of the domain
+                    type: string
+                  name:
+                    description: Human readable identifier for the domain
+                    type: string
+                  vip:
+                    description: Virtual IP address of the domain cluster
+                    type: string
+                  apiport:
+                    description: K8s api port for domain cluster
+                    format: int32
+                    type: integer
+                  fqdn:
+                    description: Fully qualified domain name for Spektra ingress
+                    type: string
+                  port:
+                    description: Spektra ingress port
+                    format: int32
+                    type: integer
+                required:
+                - customer
+                - id
+                - name
+                - vip
+                - fqdn
+                type: object
+              portmap:
+                description: Port mapping configuration
+                properties:
+                  enable:
+                    description: Is portmapping needed?
+                    type: boolean
+                  publicfqdn:
+                    description: FQDN for connectivity to the domain cluster
+                    type: string
+                  publicport:
+                    description: Port number for connectivity to the domain cluster
+                    format: int32
+                    type: integer
+                  valid:
+                    description: Is portmapping setting done by the SP?
+                    type: boolean
+                required:
+                - enable
+                - valid
+                type: object
+            required:
+            - aggregation
+            - domain
+            - portmap
+            type: object
+          status:
+            description: SpektraSvcStatus defines the observed state of SpektraSvc
+            properties:
+              domainid:
+                description: Unique identification of the domain
+                type: string
+              logsendpoint:
+                description: Endpoint for logging information
+                type: string
+              objectstoreendpoint:
+                description: Endpoint for object storage
+                type: string
+              portmapping:
+                description: portmapping status for connectivity to the domain cluster
+                type: boolean
+              statsendpoint:
+                description: Endpoint for stats information
+                type: string
+            required:
+            - domainid
+            - portmapping
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
