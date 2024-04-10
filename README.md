@@ -62,8 +62,8 @@ gcloud dns record-sets create <FQDN of your cluster> --rrdatas=8.8.8.8 --type=A 
 - **Deploy Spektra (BYOL) with required fields.**
     - **OIDC_VIP** It is the OIDC VIP address of the GKE cluster.
     - **FQDN** is fqdn used for cluster.
-    - **CA_CERT_FILE_BASE64** is valid .crt in base64 format.
-    - **CA_KEY_FILE_BASE64** is valid .key in base64 format.
+    - **CA_CERT_FILE_BASE64** is valid crt in base64 format.
+    - **CA_KEY_FILE_BASE64** is valid key in base64 format.
 
 ### Check Status
 - Run the following command to check the status of all spektra system pods. All pods will be in spektra-system namespace.
@@ -109,7 +109,7 @@ sudo bash -c 'echo "<ingress-ip-address> <spektrafqdn> " >> /etc/hosts'
 ```bash
 gcloud dns record-sets update <spektra-fqdn> --rrdatas=<ip-address> --type=A --ttl=60 --zone=zone-name
 ```
-- Open the spektra URL: **https://<fqdn>:5443** and configure the Domain.
+- Open the spektra URL: **https://&lt;fqdn&gt;:5443** and configure the Domain.
 - Navigate to the Domain setup page and enter the following, and select **Create Domain**:
     - Domain Name
     - User Name
