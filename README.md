@@ -17,6 +17,7 @@ Make sure OIDC pods are running once the identity service is enabled.
 - In order to configure **GKE OIDC**, Spektra’s **FQDN Issuer URL** needs a **CA** certificate.
 
 ## Installation Steps
+### Configure OIDC
 - To configure OIDC, create a patch file **/tmp/client-config-patch.yaml** with FQDN and CA certificates:
 ```json
 spec:
@@ -48,13 +49,23 @@ kubectl -n kube-public get clientconfig default -o jsonpath="{.spec.server}"
 # Expected Output:
 https://<OIDC_VIP>:443
 ```
-- Set up the Cloud DNS for your FQDN. If the DNS entry already exists, skip this step:
+
+### Set up the Cloud DNS for your FQDN.
+- If the DNS entry already exists, skip this step:
 ```bash
 gcloud dns managed-zones create <snakecase DNS zone name>-dns --description=<snakecase DNS zone name>-dns --dns-name=<DNS zone name> --visibility=private --networks=default
 
 gcloud dns record-sets create <FQDN of your cluster> --rrdatas=8.8.8.8 --type=A --ttl=60 --zone=<snakecase DNS zone name>-dns
 ```
-- **Deploy the cluster with required fields.**
+
+### Deploy the Spektra (BYOL) in GCP Marketplace
+- **Deploy Spektra (BYOL) with required fields.**
+    - **OIDC_VIP** It is the OIDC VIP address of the GKE cluster.
+    - **FQDN** is fqdn used for cluster.
+    - **CA_CERT_FILE_BASE64** is valid .crt in base64 format.
+    - **CA_KEY_FILE_BASE64** is valid .key in base64 format.
+
+### Check Status
 - Run the following command to check the status of all spektra system pods. All pods will be in spektra-system namespace.
 
 > **Note:** All Spektra system pods will be ready in 5-7 minutes.
