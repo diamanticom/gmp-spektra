@@ -18,36 +18,9 @@ Make sure OIDC pods are running once the identity service is enabled.
 
 ## Installation Steps
 ### Configure OIDC
-- To configure OIDC, create a patch file **/tmp/client-config-patch.yaml** with FQDN and CA certificates:
-```json
-spec:
- authentication:
- - name: oidc
-   oidc:
-    clientID: kubernetes.local
-    certificateAuthorityData: "<CA_CERT_FILE_BASE64>"
-    issuerURI: https://<ISSUER_URI_HOST>:5443/v1/identity/oidc
-    cloudConsoleRedirectURI: https://console.cloud.google.com/kubernetes/oidc
-    kubectlRedirectURI: https://<ISSUER_URI_HOST>:5443
-    userClaim: username
-    groupsClaim: groups
-    userPrefix: "-"
-```
-- Run the following command to set OIDC authentication:
+- To configure OIDC use the following script <a href="">here</a>.
 ```bash
-kubectl patch clientconfig default -n kube-public --type merge --patch-file /tmp/client-config-patch.yaml
-
-# Expected Output:
-clientconfig.authentication.gke.io/default patched
-```
-
-- Run the following command to get the OIDC VIP address:
-
-```bash
-kubectl -n kube-public get clientconfig default -o jsonpath="{.spec.server}"
-
-# Expected Output:
-https://<OIDC_VIP>:443
+./gke-oidc.sh <Cluster Name> -z <Cluster Zone> -s <Spektra FQDN> -c <CA cert file>,<CA key file>
 ```
 
 ### Set up the Cloud DNS for your FQDN.
@@ -67,12 +40,10 @@ gcloud dns record-sets create <FQDN of your cluster> --rrdatas=8.8.8.8 --type=A 
 
 ### Check Status
 - Run the following command to check the status of all spektra system pods. All pods will be in spektra-system namespace.
-
 > **Note:** All Spektra system pods will be ready in 5-7 minutes.
 ```bash
 watch "kubectl get po -n spektra-system"
 ```
-
 - Ensure the following conditions are met before setting up spektra domain:
 ```bash
 kubectl wait pods -l app.kubernetes.io/instance=vault -n spektra-system --for condition=Initialized --timeout=0
