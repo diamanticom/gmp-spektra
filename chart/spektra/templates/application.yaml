@@ -17,11 +17,15 @@ spec:
       Kubernetes based installation for the Diamanti Spektra.
     maintainers:
     - name: Diamanti
-      url: https://docs.diamanti.com/docs-spektra/3.7.0/SpektraOverview.html
+      url: https://docs.diamanti.com/docs-spektra/3.9.0/SpektraOverview.html
     links:
     - description: 'Official documentation for the Diamanti Spektra'
-      url: https://docs.diamanti.com/docs-spektra/3.7.0/InstallationGuide.html#installing-on-gke
-
+      url: https://docs.diamanti.com/docs-spektra/3.9.0/InstallationGuide.html#installing-on-gke
+    - description: 'GCP Marketplace documentation for the Diamanti Spektra'
+      url: https://github.com/diamanticom/gmp-spektra/blob/master/README.md
+    notes: |-  
+      Configure Domain <a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#configuring-domain">here</a> </li>
+     
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
