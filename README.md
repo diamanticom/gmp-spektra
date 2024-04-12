@@ -8,7 +8,7 @@ A GKE cluster should have the following configurations:
 
 ## Installation Steps
 ### Configure OIDC
-- To configure OIDC use the following script <a href="">here</a>.
+- To configure OIDC use the following script <a href="https://raw.githubusercontent.com/diamanticom/gmp-spektra/master/gke-oidc.sh">here</a>.
 ```bash
 ./gke-oidc.sh <Cluster Name> -z <Cluster Zone> -s <Spektra FQDN> -c <CA cert file>,<CA key file>
 ```
