@@ -31,13 +31,6 @@ gcloud dns managed-zones create <snakecase DNS zone name>-dns --description=<sna
 gcloud dns record-sets create <FQDN of your cluster> --rrdatas=8.8.8.8 --type=A --ttl=60 --zone=<snakecase DNS zone name>-dns
 ```
 
-### Deploy the Spektra (BYOL) in GCP Marketplace
-- **Deploy Spektra (BYOL) with required fields.**
-    - **OIDC_VIP** It is the OIDC VIP address of the GKE cluster.
-    - **FQDN** is fqdn used for cluster.
-    - **CA_CERT_FILE_BASE64** is valid crt in base64 format.
-    - **CA_KEY_FILE_BASE64** is valid key in base64 format.
-
 ### Check Status
 - Run the following command to check the status of all spektra system pods. All pods will be in spektra-system namespace.
 > **Note:** All Spektra system pods will be ready in 5-7 minutes.
