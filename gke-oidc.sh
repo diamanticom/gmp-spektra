@@ -52,14 +52,14 @@ done
 
 SPEKTRA_DEV_CA_CRT=
 if [ -n "$CA_CERT_FILE" -a -f "$CA_CERT_FILE" ]; then
-    if [ "$OSTYPE" = 'darwin23.0' ]; then
+    if [ "$OSTYPE" = 'darwin' ]; then
         SPEKTRA_DEV_CA_CRT=$(cat $CA_CERT_FILE | base64)
     else
         SPEKTRA_DEV_CA_CRT=$(cat $CA_CERT_FILE | base64 -w 0)
     fi
 fi
 if [ -n "$CA_KEY_FILE" -a -f "$CA_KEY_FILE" ]; then
-    if [ "$OSTYPE" = 'darwin23.0' ]; then
+    if [ "$OSTYPE" = 'darwin' ]; then
         SPEKTRA_DEV_CA_KEY=$(cat $CA_KEY_FILE | base64)
     else
         SPEKTRA_DEV_CA_KEY=$(cat $CA_KEY_FILE | base64 -w 0)
