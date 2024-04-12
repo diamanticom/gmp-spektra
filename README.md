@@ -4,16 +4,6 @@
 A GKE cluster should have the following configurations:
 - GKE cluster with K8S version **1.28**
 - There should be at least one worker node with a minimum configuration of **E2-Standard-4 [4 VCPU and 16GB Memory]**.
-- You should enable the **Identity Service**. Using **gcloud**, enable the service by using the `enable-identity-service` flag.
- ```bash
- # For new clusters
- gcloud container clusters create CLUSTER_NAME --enable-identity-service
- 
- # For existing clusters
- gcloud container clusters update CLUSTER_NAME --enable-identity-service
-```
-Make sure OIDC pods are running once the identity service is enabled.
-
 - In order to configure **GKE OIDC**, Spektra’s **FQDN Issuer URL** needs a **CA** certificate.
 
 ## Installation Steps
