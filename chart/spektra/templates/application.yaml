@@ -24,8 +24,8 @@ spec:
     - description: 'GCP Marketplace documentation for the Diamanti Spektra'
       url: https://github.com/diamanticom/gmp-spektra/blob/master/README.md
     notes: |-  
-      Configure Domain <a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#configuring-domain">here</a> </li>
-     
+      Check Application Status <a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#check-status">here</a> </br>
+      Configure Domain <a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#configuring-domain">here</a> 
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"

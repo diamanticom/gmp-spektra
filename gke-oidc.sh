@@ -122,7 +122,7 @@ EOF
         echo "---------------------------------------------------------------"
         echo "OIDC VIP: $(echo "$OIDC_INGRESS_ADDRESS" | sed -e 's|^https://||' -e 's|:.*||')"
         echo ""
-        echo "Fully Qualified Domain Name (FQDN): ${SPEKTRA_FQDN}"
+        echo "Spektra_FQDN: ${SPEKTRA_FQDN}"
         echo ""
         echo "Base64-encoded CA Certificate File: ${SPEKTRA_DEV_CA_CRT}"
         echo ""

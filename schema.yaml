@@ -52,18 +52,29 @@ form:
     description: |
       <h4>Prerequisites</h4>
       <ul>
-        <li>The GKE cluster should have Kubernetes version 1.28 </li>
-        <li>There should be at least one worker node with a minimum configuration of <b>E2-Standard-4 [4 VCPU and 16GB Memory]</b>. </li>
-        <li>To configure GKE OIDC, Spektra's FQDN Issuer URL requires a CA certificate. </li>
+          <li>GKE cluster with K8S version 1.28 </li>
+          <li>There should be at least one worker node with a minimum configuration of <b>E2-Standard-4 [4 VCPU and 16GB
+                  Memory]</b>. </li>
+          <li>To configure OIDC, Spektra's FQDN Issuer URL requires a CA certificate. </li>
       </ul>
       <h4>Installation Steps</h4>
       <ul>
-        <li>Create a new <b>spektra-system</b> namespace. </li>
-        <li>To configure OIDC use the following script <a href="">here</a>. </br>
-            <code>./gke-oidc.sh <Cluster Name> -z <Cluster Zone> -s <Spektra FQDN> -c <CA cert file>,<CA key file> </code> 
+          <li>Configure <b>OIDC</b> using the following script <a
+                  href="https://raw.githubusercontent.com/diamanticom/gmp-spektra/master/gke-oidc.sh">here</a>. </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<b>usage:</b>
+              <code> ./gke-oidc.sh &lt;Cluster Name&gt; -z &lt;Cluster Zone&gt; -s &lt;Spektra FQDN&gt; -c &lt;CA Cert File&gt;,&lt;CA Key File&gt;</code>
+          </li>
+          <li>Setup Cloud DNS for the Spektra FQDN. <a
+                  href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#set-up-the-cloud-dns-for-your-fqdn">here</a>
+          </li>
+      </ul>
+      <h4>Deployment Steps</h4>
+      <ul>
+        <li>Select the <b>"spektra-system"</b> namespace. If it does not exist, select <b>create a new namespace</b> with the name <b>"spektra-system"</b>.</li>
+        <li>For OIDC_VIP, Spektra_FQDN, CA_CERT_FILE_BASE64 and CA_KEY_FILE_BASE64, use the values provided by the <b>gke-oidc.sh</b> script.</li>
+        <li>Deploy Spektra. Once deployed, check status and configure the domain by following the steps outlined <a
+                  href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#check-status">here</a>.
         </li>
-        <li>Set up the Cloud DNS for your FQDN. <a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#set-up-the-cloud-dns-for-your-fqdn">here</a></li>
-        <li>Deploy the application. Once deployed, proceed to configure the domain by following the steps outlined <a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#set-up-the-cloud-dns-for-your-fqdn">here</a>.</li>
       </ul>
       <h5><a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md">Link to documentation.</a></h5>
 
@@ -83,7 +94,7 @@ properties:
     description: It is the OIDC VIP address of the GKE cluster.
   spec.spektraFqdn:
     type: string
-    title: FQDN
+    title: Spektra_FQDN
     description: Fully Qualified Domain Name (FQDN) used for cluster.
   spec.spektraPort:
     type: integer

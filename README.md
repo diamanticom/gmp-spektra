@@ -13,12 +13,10 @@ A GKE cluster should have the following configurations:
 ./gke-oidc.sh <Cluster Name> -z <Cluster Zone> -s <Spektra FQDN> -c <CA cert file>,<CA key file>
 ```
 
-### Set up the Cloud DNS for your FQDN.
-- If the DNS entry already exists, skip this step:
+### Setup Cloud DNS for the Spektra FQDN
+- If the DNS zone already exists, skip this step:
 ```bash
-gcloud dns managed-zones create <snakecase DNS zone name>-dns --description=<snakecase DNS zone name>-dns --dns-name=<DNS zone name> --visibility=private --networks=default
-
-gcloud dns record-sets create <FQDN of your cluster> --rrdatas=8.8.8.8 --type=A --ttl=60 --zone=<snakecase DNS zone name>-dns
+gcloud dns managed-zones create <DNS zone name> --description=<DNS zone name description> --dns-name=<FQDN minus hostname> --visibility=private --networks=default
 ```
 
 ### Check Status
@@ -30,25 +28,38 @@ watch "kubectl get po -n spektra-system"
 - Ensure the following conditions are met before setting up spektra domain:
 ```bash
 kubectl wait pods -l app.kubernetes.io/instance=vault -n spektra-system --for condition=Initialized --timeout=0
-    # pod/vault-0 condition met
 
-kubectl wait pods -l app.kubernetes.io/instance=spektra-ingress -n spektra-system --for condition=Ready --timeout=0
-    # pod/spektra-ingress-ingress-nginx-controller-647d97c54b-skbrs condition met
-
-kubectl wait pods -l statefulset.kubernetes.io/pod-name=catalog-mongo-0 -n spektra-system --for condition=Ready --timeout=0
-    # pod/catalog-mongo-0 condition met
-
-kubectl wait pods -l control-plane=controller-manager -n spektra-system --for condition=Ready --timeout=0
-    # pod/capdi-controller-manager-b88bcd75b-nvtvl condition met
-    # pod/capi-attacher-controller-manager-686f6f5559-wdvtz condition met
-    # pod/capi-controller-manager-5f5775cb48-trccx condition met
-    # pod/capi-kubeadm-bootstrap-controller-manager-7d99996ff6-vwlqt condition met
-    # pod/capi-kubeadm-control-plane-controller-manager-565fb56c6f-tnr6k condition met
-    # pod/tenant-controller-manager-6c56dbdc86-r2z6k condition met
-
-kubectl wait pods -l control-plane=upgrade-manager -n spektra-system --for condition=Ready --timeout=0
-   # pod/upgrade-manager-7868d69f4b-8zvsg condition met
+# pod/vault-0 condition met
 ```
+
+```bash
+kubectl wait pods -l app.kubernetes.io/instance=spektra-ingress -n spektra-system --for condition=Ready --timeout=0
+
+# pod/spektra-ingress-ingress-nginx-controller-647d97c54b-skbrs condition met
+```    
+
+```bash
+kubectl wait pods -l statefulset.kubernetes.io/pod-name=catalog-mongo-0 -n spektra-system --for condition=Ready --timeout=0
+
+# pod/catalog-mongo-0 condition met
+```    
+
+```bash
+kubectl wait pods -l control-plane=controller-manager -n spektra-system --for condition=Ready --timeout=0
+
+# pod/capdi-controller-manager-b88bcd75b-nvtvl condition met
+# pod/capi-attacher-controller-manager-686f6f5559-wdvtz condition met
+# pod/capi-controller-manager-5f5775cb48-trccx condition met
+# pod/capi-kubeadm-bootstrap-controller-manager-7d99996ff6-vwlqt condition met
+# pod/capi-kubeadm-control-plane-controller-manager-565fb56c6f-tnr6k condition met
+# pod/tenant-controller-manager-6c56dbdc86-r2z6k condition met
+```
+
+```bash
+kubectl wait pods -l control-plane=upgrade-manager -n spektra-system --for condition=Ready --timeout=0
+
+# pod/upgrade-manager-7868d69f4b-8zvsg condition met
+``` 
 
 ## Configuring Domain
 - Get the ingress address as mentioned:
@@ -61,7 +72,7 @@ sudo bash -c 'echo "<ingress-ip-address> <spektrafqdn> " >> /etc/hosts'
 ```
 - Update the DNS record set by adding ingress entry.
 ```bash
-gcloud dns record-sets update <spektra-fqdn> --rrdatas=<ip-address> --type=A --ttl=60 --zone=zone-name
+gcloud dns record-sets create <Spektra-FQDN> --rrdatas=<Spektra-Ingress-IP-Address> --type=A --ttl=60 --zone=zone-name
 ```
 - Open the spektra URL: **https://&lt;fqdn&gt;:5443** and configure the Domain.
 - Navigate to the Domain setup page and enter the following, and select **Create Domain**:
@@ -74,22 +85,39 @@ gcloud dns record-sets update <spektra-fqdn> --rrdatas=<ip-address> --type=A --t
 - On the Eula agreement page select the checkbox and then select Agree and Continue.
 - Enter the login credentails and select Login. You are directed to SP Domain home page.
 - Ensure the following conditions are met before setting up spektra domain:
+
 ```bash
 kubectl wait pods -l app.kubernetes.io/instance=vault -n spektra-system --for condition=Ready --timeout=0
-    # pod/vault-0 condition met
 
+# pod/vault-0 condition met
+```
+
+```bash
 kubectl wait pods -l statefulset.kubernetes.io/pod-name=spektra-minio-pool-0-0 -n spektra-system --for condition=Ready --timeout=0
-    # pod/spektra-minio-pool-0-0 condition met
 
+# pod/spektra-minio-pool-0-0 condition met
+```
+
+```bash
 kubectl wait pods -l app.kubernetes.io/name=query -n spektra-system --for condition=Ready --timeout=0
-    # pod/spektra-thanos-query-6dd9c57795-bq7cz condition met
 
+# pod/spektra-thanos-query-6dd9c57795-bq7cz condition met
+```
+
+```bash
 kubectl wait pods -l monitoring.banzaicloud.io/storeendpoint=spektra-thanos -n spektra-system --for condition=Ready --timeout=0
-    # pod/spektra-thanos-spektra-thanos-store-5569d45cf-7mkxs condition met
 
+# pod/spektra-thanos-spektra-thanos-store-5569d45cf-7mkxs condition met
+```
+
+```bash
 kubectl wait pods -l statefulset.kubernetes.io/pod-name=spektra-thanos-receiver-soft-tenant-0 -n spektra-system --for condition=Ready --timeout=0
-    # pod/spektra-thanos-receiver-soft-tenant-0 condition met
 
+# pod/spektra-thanos-receiver-soft-tenant-0 condition met
+```
+
+```bash
 kubectl wait pods -l statefulset.kubernetes.io/pod-name=spektra-thanos-receiver-soft-tenant-1 -n spektra-system --for condition=Ready --timeout=0
-    # pod/spektra-thanos-receiver-soft-tenant-1 condition met
+
+# pod/spektra-thanos-receiver-soft-tenant-1 condition met
 ```
