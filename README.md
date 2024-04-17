@@ -28,38 +28,33 @@ watch "kubectl get po -n spektra-system"
 - Ensure the following conditions are met before setting up spektra domain:
 ```bash
 kubectl wait pods -l app.kubernetes.io/instance=vault -n spektra-system --for condition=Initialized --timeout=0
-
-# pod/vault-0 condition met
 ```
+pod/vault-0 condition met
 
 ```bash
 kubectl wait pods -l app.kubernetes.io/instance=spektra-ingress -n spektra-system --for condition=Ready --timeout=0
-
-# pod/spektra-ingress-ingress-nginx-controller-647d97c54b-skbrs condition met
-```    
+```
+pod/spektra-ingress-ingress-nginx-controller-647d97c54b-skbrs condition met 
 
 ```bash
 kubectl wait pods -l statefulset.kubernetes.io/pod-name=catalog-mongo-0 -n spektra-system --for condition=Ready --timeout=0
-
-# pod/catalog-mongo-0 condition met
-```    
+```
+pod/catalog-mongo-0 condition met
 
 ```bash
 kubectl wait pods -l control-plane=controller-manager -n spektra-system --for condition=Ready --timeout=0
-
-# pod/capdi-controller-manager-b88bcd75b-nvtvl condition met
-# pod/capi-attacher-controller-manager-686f6f5559-wdvtz condition met
-# pod/capi-controller-manager-5f5775cb48-trccx condition met
-# pod/capi-kubeadm-bootstrap-controller-manager-7d99996ff6-vwlqt condition met
-# pod/capi-kubeadm-control-plane-controller-manager-565fb56c6f-tnr6k condition met
-# pod/tenant-controller-manager-6c56dbdc86-r2z6k condition met
 ```
+pod/capdi-controller-manager-b88bcd75b-nvtvl condition met \
+pod/capi-attacher-controller-manager-686f6f5559-wdvtz condition met \
+pod/capi-controller-manager-5f5775cb48-trccx condition met \
+pod/capi-kubeadm-bootstrap-controller-manager-7d99996ff6-vwlqt condition met \
+pod/capi-kubeadm-control-plane-controller-manager-565fb56c6f-tnr6k condition met \
+pod/tenant-controller-manager-6c56dbdc86-r2z6k condition met
 
 ```bash
 kubectl wait pods -l control-plane=upgrade-manager -n spektra-system --for condition=Ready --timeout=0
-
-# pod/upgrade-manager-7868d69f4b-8zvsg condition met
-``` 
+```
+pod/upgrade-manager-7868d69f4b-8zvsg condition met
 
 ## Configuring Domain
 - Get the ingress address as mentioned:
@@ -88,36 +83,30 @@ gcloud dns record-sets create <Spektra-FQDN> --rrdatas=<Spektra-Ingress-IP-Addre
 
 ```bash
 kubectl wait pods -l app.kubernetes.io/instance=vault -n spektra-system --for condition=Ready --timeout=0
-
-# pod/vault-0 condition met
 ```
+pod/vault-0 condition met
 
 ```bash
 kubectl wait pods -l statefulset.kubernetes.io/pod-name=spektra-minio-pool-0-0 -n spektra-system --for condition=Ready --timeout=0
-
-# pod/spektra-minio-pool-0-0 condition met
 ```
+pod/spektra-minio-pool-0-0 condition met
 
 ```bash
 kubectl wait pods -l app.kubernetes.io/name=query -n spektra-system --for condition=Ready --timeout=0
-
-# pod/spektra-thanos-query-6dd9c57795-bq7cz condition met
 ```
+pod/spektra-thanos-query-6dd9c57795-bq7cz condition met
 
 ```bash
 kubectl wait pods -l monitoring.banzaicloud.io/storeendpoint=spektra-thanos -n spektra-system --for condition=Ready --timeout=0
-
-# pod/spektra-thanos-spektra-thanos-store-5569d45cf-7mkxs condition met
 ```
+pod/spektra-thanos-spektra-thanos-store-5569d45cf-7mkxs condition met
 
 ```bash
 kubectl wait pods -l statefulset.kubernetes.io/pod-name=spektra-thanos-receiver-soft-tenant-0 -n spektra-system --for condition=Ready --timeout=0
-
-# pod/spektra-thanos-receiver-soft-tenant-0 condition met
 ```
+pod/spektra-thanos-receiver-soft-tenant-0 condition met
 
 ```bash
 kubectl wait pods -l statefulset.kubernetes.io/pod-name=spektra-thanos-receiver-soft-tenant-1 -n spektra-system --for condition=Ready --timeout=0
-
-# pod/spektra-thanos-receiver-soft-tenant-1 condition met
 ```
+pod/spektra-thanos-receiver-soft-tenant-1 condition met

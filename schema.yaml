@@ -62,10 +62,10 @@ form:
           <li>Configure <b>OIDC</b> using the following script <a
                   href="https://raw.githubusercontent.com/diamanticom/gmp-spektra/master/gke-oidc.sh">here</a>. </br>
               &nbsp;&nbsp;&nbsp;&nbsp;<b>usage:</b>
-              <code> ./gke-oidc.sh &lt;Cluster Name&gt; -z &lt;Cluster Zone&gt; -s &lt;Spektra FQDN&gt; -c &lt;CA Cert File&gt;,&lt;CA Key File&gt;</code>
+              <code> ./gke-oidc.sh &lt;Cluster Name&gt; -z &lt;Cluster Zone&gt; -p &lt;Project ID&gt; -s &lt;Spektra FQDN&gt; -c &lt;CA Cert File&gt;,&lt;CA Key File&gt;</code>
           </li>
           <li>Setup Cloud DNS for the Spektra FQDN. <a
-                  href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#set-up-the-cloud-dns-for-your-fqdn">here</a>
+                  href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#setup-cloud-dns-for-the-spektra-fqdn">here</a>
           </li>
       </ul>
       <h4>Deployment Steps</h4>
@@ -91,7 +91,7 @@ properties:
   spec.clusterVip:
     type: string
     title: OIDC_VIP
-    description: It is the OIDC VIP address of the GKE cluster.
+    description: It is the OIDC_VIP address of the GKE cluster.
   spec.spektraFqdn:
     type: string
     title: Spektra_FQDN
