@@ -6,16 +6,18 @@ usage() {
   echo ""
   echo "GKE OIDC Setup Script"
   echo ""
-  echo "Usage: $0 <Cluster Name> [-z <Cluster Zone>]"
+  echo "Usage: $0 <Cluster Name> [-z <Cluster Zone>] [-p <Project ID>]"
   echo "                         [-s <Spektra FQDN>] [-c <CA cert file>,<CA key file>]"
   echo "  -h                  Print this usage."
   echo "  -s <Spektra FQDN>   Spektra fully qualified domain name, (required for create)."
-  echo "  -z <Cluster Zone>  Node group instance type, (default: us-central1-a)."
+  echo "  -z <Cluster Zone>   Node group instance type, (default: us-central1-a)."
+  echo "  -p <Project ID>     GCP Project ID"
   echo "  -c <CA cert file>,<CA key file> CA cert and key pair to sign Spektra control plane TLS."
   exit 1
 }
 
 CLUSTER_NAME=
+PROJECT=
 OPERATION=update
 SPEKTRA_FQDN=
 SPEKTRA_PORT=5443
@@ -27,7 +29,7 @@ if [ -n "$1" -a "${1}" = "${1##-}" ]; then
     shift
 fi
 
-while getopts ":hs:z:c:" options; do
+while getopts ":hs:z:p:c:" options; do
     case "${options}" in
         s)
             if [ "${OPTARG%:*}" != "$OPTARG" ]; then
@@ -39,6 +41,9 @@ while getopts ":hs:z:c:" options; do
             ;;
         z)
             ZONE=$OPTARG
+            ;;
+        p)
+            PROJECT=$OPTARG
             ;;
         c)  
             CA_CERT_FILE=${OPTARG%,*}
@@ -74,14 +79,14 @@ fi
 case $OPERATION in
     update )
         # update cluster to enabled OIDC
-        gcloud container clusters update $CLUSTER_NAME --zone=$ZONE --enable-identity-service
+        gcloud container clusters update $CLUSTER_NAME --zone=$ZONE --project=$PROJECT --enable-identity-service
 
         if [ $? -ne 0 ]; then
             exit 1
         fi
 
         # get cluster kubeconfig
-        gcloud container clusters get-credentials $CLUSTER_NAME --zone=$ZONE
+        gcloud container clusters get-credentials $CLUSTER_NAME --zone=$ZONE  --project=$PROJECT
         if [ $? -ne 0 ]; then
             exit 1
         fi
@@ -113,14 +118,14 @@ EOF
         kubectl patch clientconfig default -n kube-public --type merge --patch-file /tmp/client-config-patch.yaml
         rm -f /tmp/client-config-patch.yaml
 
-        # get OIDC VIP ingress address
+        # get OIDC_VIP ingress address
         OIDC_INGRESS_ADDRESS=$(kubectl -n kube-public get clientconfig default -o jsonpath="{.spec.server}")
 
         echo ""
         echo "---------------------------------------------------------------"
         echo "Please provide the following values in the GCP Marketplace form:"
         echo "---------------------------------------------------------------"
-        echo "OIDC VIP: $(echo "$OIDC_INGRESS_ADDRESS" | sed -e 's|^https://||' -e 's|:.*||')"
+        echo "OIDC_VIP: $(echo "$OIDC_INGRESS_ADDRESS" | sed -e 's|^https://||' -e 's|:.*||')"
         echo ""
         echo "Spektra_FQDN: ${SPEKTRA_FQDN}"
         echo ""
