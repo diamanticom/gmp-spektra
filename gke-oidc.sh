@@ -86,7 +86,7 @@ case $OPERATION in
         fi
 
         # get cluster kubeconfig
-        gcloud container clusters get-credentials $CLUSTER_NAME --zone=$ZONE  --project=$PROJECT
+        gcloud container clusters get-credentials $CLUSTER_NAME --zone=$ZONE --project=$PROJECT
         if [ $? -ne 0 ]; then
             exit 1
         fi
