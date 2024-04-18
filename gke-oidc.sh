@@ -23,6 +23,7 @@ SPEKTRA_FQDN=
 SPEKTRA_PORT=5443
 ZONE=us-central1-a
 CA_CERT_FILE=
+CA_KEY_FILE=
 
 if [ -n "$1" -a "${1}" = "${1##-}" ]; then
     CLUSTER_NAME=$1
@@ -30,6 +31,10 @@ if [ -n "$1" -a "${1}" = "${1##-}" ]; then
 fi
 
 if [ -z "$1" ]; then
+    usage
+fi
+
+if [ -z "$SPEKTRA_FQDN" -o -z "$PROJECT" -o -z "$CA_CERT_FILE" -o -z "$CA_KEY_FILE" ]; then
     usage
 fi
 
@@ -58,6 +63,13 @@ while getopts ":hs:z:p:c:" options; do
             ;;
     esac
 done
+if [ -z "$CLUSTER_NAME" -o -z "$OPERATION" ]; then
+    usage
+fi
+
+if [ -z "$SPEKTRA_FQDN" -a "$OPERATION" = "create" ]; then
+    usage
+fi
 
 SPEKTRA_DEV_CA_CRT=
 if [ -n "$CA_CERT_FILE" -a -f "$CA_CERT_FILE" ]; then
