@@ -29,6 +29,10 @@ if [ -n "$1" -a "${1}" = "${1##-}" ]; then
     shift
 fi
 
+if [ -z "$1" ]; then
+    usage
+fi
+
 while getopts ":hs:z:p:c:" options; do
     case "${options}" in
         s)
@@ -86,7 +90,7 @@ case $OPERATION in
         fi
 
         # get cluster kubeconfig
-        gcloud container clusters get-credentials $CLUSTER_NAME --zone=$ZONE --project=$PROJECT
+        gcloud container clusters get-credentials $CLUSTER_NAME --zone=$ZONE  --project=$PROJECT
         if [ $? -ne 0 ]; then
             exit 1
         fi
