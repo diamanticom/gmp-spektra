@@ -30,14 +30,6 @@ if [ -n "$1" -a "${1}" = "${1##-}" ]; then
     shift
 fi
 
-if [ -z "$1" ]; then
-    usage
-fi
-
-if [ -z "$SPEKTRA_FQDN" -o -z "$PROJECT" -o -z "$CA_CERT_FILE" -o -z "$CA_KEY_FILE" ]; then
-    usage
-fi
-
 while getopts ":hs:z:p:c:" options; do
     case "${options}" in
         s)
@@ -68,6 +60,10 @@ if [ -z "$CLUSTER_NAME" -o -z "$OPERATION" ]; then
 fi
 
 if [ -z "$SPEKTRA_FQDN" -a "$OPERATION" = "create" ]; then
+    usage
+fi
+
+if [ -z "$SPEKTRA_FQDN" -o -z "$PROJECT" -o -z "$CA_CERT_FILE" -o -z "$CA_KEY_FILE" ]; then
     usage
 fi
 
