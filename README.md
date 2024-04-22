@@ -2,7 +2,7 @@
 
 ## Prerequisites
 A GKE cluster should have the following configurations:
-- GKE cluster with K8S version **1.28**
+- GKE cluster with K8S version **1.27** or **1.28**
 - There should be at least one worker node with a minimum configuration of **E2-Standard-4 [4 VCPU and 16GB Memory]**.
 - In order to configure **GKE OIDC**, Spektra’s **FQDN Issuer URL** needs a **CA** certificate.
 
