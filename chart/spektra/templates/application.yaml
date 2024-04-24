@@ -19,10 +19,8 @@ spec:
     - name: Diamanti
       url: https://docs.diamanti.com/docs-spektra/3.9.0/SpektraOverview.html
     links:
-    - description: 'Official documentation for the Diamanti Spektra'
-      url: https://docs.diamanti.com/docs-spektra/3.9.0/InstallationGuide.html#installing-on-gke
-    - description: 'GCP Marketplace documentation for the Diamanti Spektra'
-      url: https://github.com/diamanticom/gmp-spektra/blob/master/README.md
+    - description: 'Attaching tenant clusters to Spektra'
+      url: https://docs.diamanti.com/docs-spektra/3.9.0/ClusterGuide.html#attaching-tenant-clusters-when-domain-is-gke
     notes: |-  
       Check Application Status <a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#check-status">here</a> </br>
       Configure Domain <a href="https://github.com/diamanticom/gmp-spektra/blob/master/README.md#configuring-domain">here</a> 
