@@ -52,7 +52,7 @@ form:
     description: |
       <h4>Prerequisites</h4>
       <ul>
-          <li>GKE cluster with K8S version 1.28 </li>
+          <li>GKE cluster with K8S version 1.27 or 1.28 </li>
           <li>There should be at least one worker node with a minimum configuration of <b>E2-Standard-4 [4 VCPU and 16GB
                   Memory]</b>. </li>
           <li>To configure OIDC, Spektra's FQDN Issuer URL requires a CA certificate. </li>
